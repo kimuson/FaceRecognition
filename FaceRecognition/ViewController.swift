@@ -10,17 +10,17 @@ import UIKit
 import Vision
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     //写真の設定
-    private let picture = UIImage(named: "TestPicture.jpg")
+    private var picture = UIImage(named: "default.png")
 
     //結果表示用
     @IBOutlet weak var dipPicture: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        faceDetection()
+        dipPicture.image = UIImage(named: "default.png")
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,6 +69,52 @@ class ViewController: UIViewController {
         
         return drawnImage
     }
+    
+    @IBAction func choosePicture(_ sender: Any) {
+        // カメラロールが利用可能か？
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            // 写真を選ぶビュー
+            let pickerView = UIImagePickerController()
+            // 写真の選択元をカメラロールにする
+            // 「.camera」にすればカメラを起動できる
+            pickerView.sourceType = .photoLibrary
+            // デリゲート
+            pickerView.delegate = self
+            // ビューに表示
+            self.present(pickerView, animated: true)
+        }
+    }
+    
+    //リセット処理
+    @IBAction func resetPicture(_ sender: Any) {
+        // アラートで確認
+        let alert = UIAlertController(title: "確認", message: "画像を初期化してもよいですか？", preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default, handler:{(action: UIAlertAction) -> Void in
+            // デフォルトの画像を表示する
+            self.dipPicture.image = UIImage(named: "default.png")
+        })
+        let cancelButton = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        // アラートにボタン追加
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+        // アラート表示
+        present(alert, animated: true, completion: nil)
+    }
+
+    // 写真を選んだ後に呼ばれる処理
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        // 選択した写真を取得する
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        // ビューに表示する
+        self.picture = image
+        
+        faceDetection()
+        
+        // 写真を選ぶビューを引っ込める
+        self.dismiss(animated: true)
+    }
+    
+    
 }
 
 extension CGRect {
