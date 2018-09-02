@@ -6,6 +6,9 @@ This is a sample code that detects a face with a photo selected from the camera 
 * Face detection of still images
 
 ## Reference
+This sample code created with reference to the following
 * 　https://dev.classmethod.jp/smartphone/iphone/ios-11-vision/
 * 　https://picolica.com/2017/04/25/swift3-choose-from-cameraroll/
+
+
  
