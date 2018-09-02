@@ -1,6 +1,10 @@
 # FaceRecognition
 This is a sample code that detects a face with a photo selected from the camera roll.
 
+## Execution environment
+* Swift4
+* xcode9
+
 ## Function
 * Select photo from camera roll
 * Face detection of still images
